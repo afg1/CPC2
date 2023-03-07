@@ -25,7 +25,8 @@ jobs:
 
   create-singularity-image:
     runs-on: ubuntu-latest
-
+    permissions:
+      packages: write
     container:
       image: quay.io/singularity/singularity:v3.8.1
       options: --privileged
