@@ -18,7 +18,7 @@ jobs:
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       
       - name: docker build
-        run: docker build -f DOckerfile -t afgreen/cpc2:latest .
+        run: docker build -f Dockerfile -t afgreen/cpc2:latest .
 
       - name: docker push
         run: docker push afgreen/cpc2:latest
