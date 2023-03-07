@@ -1,0 +1,42 @@
+name : Build docker and singularity containers
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  create-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: docker login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      
+      - name: docker build
+        run: docker build -f DOckerfile -t afgreen/cpc2:latest .
+
+      - name: docker push
+        run: docker push afgreen/cpc2:latest
+
+  create-singularity-image:
+    runs-on: ubuntu-latest
+
+    container:
+      image: quay.io/singularity/singularity:v3.8.1
+      options: --privileged
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: singularity build
+        run: singularity build cpc2.sif cpc2.def
+
+      - name: push to ghcr
+        run: |
+        echo ${{ secrets.GITHUB_TOKEN }} | singularity remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
+        singularity push cpc2.sif oras://ghcr.io/$GITHUB_REPOSITORY}:latest
