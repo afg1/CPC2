@@ -36,7 +36,5 @@ jobs:
       - name: singularity build
         run: singularity build cpc2.sif cpc2.def
 
-      - name: push to ghcr
-        run: |
-        echo ${{ secrets.GITHUB_TOKEN }} | singularity remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
-        singularity push cpc2.sif oras://ghcr.io/$GITHUB_REPOSITORY}:latest
+      - name: "push to ghcr"
+        run: echo ${{ secrets.GITHUB_TOKEN }} | singularity remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io && singularity push cpc2.sif oras://ghcr.io/$GITHUB_REPOSITORY}:latest
