@@ -6,7 +6,7 @@ RUN wget https://github.com/gao-lab/CPC2_standalone/archive/refs/tags/v1.0.1.tar
     tar -xf v1.0.1.tar.gz && \
     rm v1.0.1.tar.gz
 
-RUN pip install --no-cache-dir six numpy biopython
+RUN pip install six numpy biopython && pip cache purge
 ENV CPC_HOME=/CPC2_standalone-1.0.1
 RUN cd /CPC2_standalone-1.0.1/libs/libsvm && \
     tar -xf libsvm-3.18.tar.gz && \
